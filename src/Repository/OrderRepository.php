@@ -3,28 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Order;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class OrderRepository
+class OrderRepository extends ServiceEntityRepository
 {
-    private array $orders;
-
-    public function __construct()
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->orders = [
-            new Order(1, 1500),
-            new Order(2, 800),
-            new Order(3, 3200),
-        ];
-    }
-
-    public function find(int $id): ?Order
-    {
-        foreach ($this->orders as $order) {
-            if ($order->getId() === $id) {
-                return $order;
-            }
-        }
-
-        return null;
+        parent::__construct($registry, Order::class);
     }
 }
