@@ -2,12 +2,15 @@
 
 namespace App\Service;
 
+use App\Entity\Order;
 use App\Repository\OrderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class OrderService
 {
     public function __construct(
         private readonly OrderRepository $orderRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -20,5 +23,15 @@ class OrderService
         }
 
         return $order->getTotal();
+    }
+
+    public function createOrder(int $total): Order
+    {
+        $order = new Order($total);
+
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
+
+        return $order;
     }
 }

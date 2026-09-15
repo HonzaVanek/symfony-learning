@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -14,15 +15,19 @@ class OrderController extends AbstractController
     ) {
     }
 
-    #[Route('/order/{id}', name: 'app_order')]
-    public function detail(int $id): Response
+    #[Route('/orders/create', name: 'order_create', methods: ['GET', 'POST'])]
+    public function create(Request $request): Response
     {
-        $total = $this->orderService->getOrderTotal($id);
+        if ($request->isMethod('POST')) {
+            $total = (int) $request->request->get('total');
 
-        if ($total === null) {
-            return new Response('Objednávka neexistuje.', 404);
+            $order = $this->orderService->createOrder($total);
+
+            return new Response(
+                'Objednávka vytvořena. ID: ' . $order->getId()
+            );
         }
 
-        return new Response("Cena objednávky je: $total");
+        return $this->render('order/create.html.twig');
     }
 }
