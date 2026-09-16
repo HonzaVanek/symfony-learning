@@ -1,0 +1,17 @@
+<h1>Objednávky</h1>
+
+{% if orders %}
+    <ul>
+        {% for order in orders %}
+            <li>
+                ID: {{ order.id }}, cena: {{ order.total }}, zákazník: {{ order.customerName }}, vytvořeno: {{ order.createdAt|date('Y-m-d H:i:s') }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Zatím nejsou žádné objednávky.</p>
+{% endif %}
+
+<a href="{{ path('order_create') }}">
+    Vytvořit novou objednávku
+</a>

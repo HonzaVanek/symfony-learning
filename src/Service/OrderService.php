@@ -25,13 +25,18 @@ class OrderService
         return $order->getTotal();
     }
 
-    public function createOrder(int $total): Order
+    public function createOrder(int $total, string $customerName): Order
     {
-        $order = new Order($total);
+        $order = new Order($customerName, $total);
 
         $this->entityManager->persist($order);
         $this->entityManager->flush();
 
         return $order;
+    }
+
+    public function getAllOrders(): array
+    {
+        return $this->orderRepository->findAll();
     }
 }

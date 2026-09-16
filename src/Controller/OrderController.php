@@ -20,8 +20,12 @@ class OrderController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $total = (int) $request->request->get('total');
+            $customerName = $request->request->get('customerName');
 
-            $order = $this->orderService->createOrder($total);
+            $order = $this->orderService->createOrder(
+                customerName: $customerName,
+                total: $total,
+            );
 
             return new Response(
                 'Objednávka vytvořena. ID: ' . $order->getId()
@@ -29,5 +33,15 @@ class OrderController extends AbstractController
         }
 
         return $this->render('order/create.html.twig');
+    }
+
+    #[Route('/orders', name: 'order_list', methods: ['GET'])]
+    public function list(): Response
+    {
+        $orders = $this->orderService->getAllOrders();
+
+        return $this->render('order/list.html.twig', [
+            'orders' => $orders,
+        ]);
     }
 }
