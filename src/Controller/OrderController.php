@@ -44,4 +44,54 @@ class OrderController extends AbstractController
             'orders' => $orders,
         ]);
     }
+
+    #[Route('/orders/{id}/edit', name: 'order_edit', methods: ['GET', 'POST'])]
+    public function edit(int $id, Request $request): Response
+    {
+        $order = $this->orderService->getOrder($id);
+
+        if ($order === null) {
+            throw $this->createNotFoundException('Objednávka nebyla nalezena.');
+        }
+
+        if ($request->isMethod('POST')) {
+            $customerName = $request->request->getString('customerName');
+            $total = $request->request->getInt('total');
+
+            $this->orderService->updateOrder(
+                $order,
+                $customerName,
+                $total,
+            );
+
+            return $this->redirectToRoute('order_list');
+        }
+
+        return $this->render('order/edit.html.twig', [
+            'order' => $order,
+        ]);
+    }
+
+    #[Route('/orders/{id}/delete', name: 'order_delete', methods: ['POST'])]
+    public function delete(int $id, Request $request): Response
+    {
+        $order = $this->orderService->getOrder($id);
+
+        if ($order === null) {
+            throw $this->createNotFoundException('Objednávka nebyla nalezena.');
+        }
+
+
+        $token = $request->request->getString('_token');
+        if (!$this->isCsrfTokenValid('delete-order-' . $id, $token)) {
+            throw $this->createAccessDeniedException(
+                'Neplatný CSRF token.'
+            );
+        }
+
+
+        $this->orderService->deleteOrder($order);
+
+        return $this->redirectToRoute('order_list');
+    }
 }

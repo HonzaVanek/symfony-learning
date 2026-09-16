@@ -39,4 +39,27 @@ class OrderService
     {
         return $this->orderRepository->findAll();
     }
+
+    public function getOrder(int $id): ?Order
+    {
+        return $this->orderRepository->find($id);
+    }
+
+    public function updateOrder(
+        Order $order,
+        string $customerName,
+        int $total,
+    ): void {
+        $order->setCustomerName($customerName);
+        $order->setTotal($total);
+
+        $this->entityManager->flush();
+    }
+
+    public function deleteOrder(Order $order): void
+    {
+        $this->entityManager->remove($order);
+        $this->entityManager->flush();
+    }
+
 }

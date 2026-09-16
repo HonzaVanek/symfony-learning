@@ -1,0 +1,26 @@
+<h1>Upravit objednávku</h1>
+
+<form method="post">
+    <label for="customerName">Zákazník:</label>
+    <input
+        type="text"
+        id="customerName"
+        name="customerName"
+        value="{{ order.customerName }}"
+        required
+    >
+
+    <label for="total">Celková cena:</label>
+    <input
+        type="number"
+        id="total"
+        name="total"
+        value="{{ order.total }}"
+        min="0"
+        required
+    >
+
+    <button type="submit">
+        Uložit změny
+    </button>
+</form>

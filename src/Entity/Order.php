@@ -50,4 +50,14 @@ class Order
     {
         return $this->total;
     }
+
+    public function setCustomerName(string $customerName): void
+    {
+        $this->customerName = $customerName;
+    }
+
+    public function setTotal(int $total): void
+    {
+        $this->total = $total;
+    }
 }
