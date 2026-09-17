@@ -19,21 +19,21 @@ class OrderController extends AbstractController
     #[Route('/orders/create', name: 'order_create', methods: ['GET', 'POST'])]
     public function create(Request $request): Response
     {
-        if ($request->isMethod('POST')) {
-            $total = (int) $request->request->get('total');
-            $customerName = $request->request->get('customerName');
+        $form = $this->createForm(OrderType::class);
 
-            $order = $this->orderService->createOrder(
-                customerName: $customerName,
-                total: $total,
-            );
+        $form->handleRequest($request);
 
-            return new Response(
-                'Objednávka vytvořena. ID: ' . $order->getId()
-            );
+        if ($form->isSubmitted() && $form->isValid()) {
+            $order = $form->getData();
+
+            $this->orderService->saveNewOrder($order);
+
+            return $this->redirectToRoute('order_list');
         }
 
-        return $this->render('order/create.html.twig');
+        return $this->render('order/create.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     #[Route('/orders', name: 'order_list', methods: ['GET'])]

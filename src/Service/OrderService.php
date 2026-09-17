@@ -67,4 +67,10 @@ class OrderService
         $this->entityManager->flush();
     }
 
+    public function saveNewOrder(Order $order): void
+    {
+        $this->entityManager->persist($order);
+        $this->entityManager->flush();
+    }
+
 }
