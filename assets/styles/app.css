@@ -1,3 +1,48 @@
 body {
-    background-color: rgb(155, 192, 169);
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 40px;
+}
+
+.order-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+}
+
+.order-form h1 {
+    margin-top: 0;
+}
+
+.order-form form > div {
+    margin-bottom: 20px;
+}
+
+.order-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.order-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.button {
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
 }

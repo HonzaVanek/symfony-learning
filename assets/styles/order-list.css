@@ -1,0 +1,11 @@
+.order-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.order-list__item {
+    margin-bottom: 12px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+}

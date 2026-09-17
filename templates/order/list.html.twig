@@ -1,25 +1,38 @@
-<h1>Objednávky</h1>
+{% extends 'base.html.twig' %}
 
-{% if orders %}
-    <ul>
-        {% for order in orders %}
-            <li>
-                ID: {{ order.id }}, cena: {{ order.total }}, zákazník: {{ order.customerName }}, vytvořeno: {{ order.createdAt|date('Y-m-d H:i:s') }} 
-                <a href="{{ path('order_edit', { id: order.id }) }}">Upravit</a>
+{% block stylesheets %}
+    {{ parent() }}
 
-                <form method="post" action="{{ path('order_delete', { id: order.id }) }}" style="display: inline;">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete-order-' ~ order.id) }}">
-                    <button type="submit">
-                        Smazat
-                    </button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>Zatím nejsou žádné objednávky.</p>
-{% endif %}
+    <link rel="stylesheet" href="{{ asset('styles/order-list.css') }}">
+{% endblock %}
 
-<a href="{{ path('order_create') }}">
-    Vytvořit novou objednávku
-</a>
+{% block body %}
+<div class="order-list">
+    <h1>Objednávky</h1>
+
+    {% if orders %}
+        <ul>
+            {% for order in orders %}
+                <li>
+                    ID: {{ order.id }}, cena: {{ order.total }}, zákazník: {{ order.customerName }}, vytvořeno: {{ order.createdAt|date('Y-m-d H:i:s') }} 
+                    <a href="{{ path('order_edit', { id: order.id }) }}">Upravit</a>
+
+                    <form method="post" action="{{ path('order_delete', { id: order.id }) }}" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete-order-' ~ order.id) }}">
+                        <button type="submit">
+                            Smazat
+                        </button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Zatím nejsou žádné objednávky.</p>
+    {% endif %}
+
+    <a href="{{ path('order_create') }}">
+        Vytvořit novou objednávku
+    </a>
+</div>
+
+{% endblock %}

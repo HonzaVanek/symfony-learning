@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\OrderService;
+use App\Form\OrderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,24 +52,23 @@ class OrderController extends AbstractController
         $order = $this->orderService->getOrder($id);
 
         if ($order === null) {
-            throw $this->createNotFoundException('Objednávka nebyla nalezena.');
+            throw $this->createNotFoundException(
+                'Objednávka nebyla nalezena.'
+            );
         }
 
-        if ($request->isMethod('POST')) {
-            $customerName = $request->request->getString('customerName');
-            $total = $request->request->getInt('total');
+        $form = $this->createForm(OrderType::class, $order);
 
-            $this->orderService->updateOrder(
-                $order,
-                $customerName,
-                $total,
-            );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->orderService->saveChanges();
 
             return $this->redirectToRoute('order_list');
         }
 
         return $this->render('order/edit.html.twig', [
-            'order' => $order,
+            'form' => $form,
         ]);
     }
 

@@ -62,4 +62,9 @@ class OrderService
         $this->entityManager->flush();
     }
 
+    public function saveChanges(): void
+    {
+        $this->entityManager->flush();
+    }
+
 }

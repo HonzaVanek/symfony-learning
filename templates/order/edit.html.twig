@@ -1,26 +1,22 @@
-<h1>Upravit objednávku</h1>
+{% extends 'base.html.twig' %}
 
-<form method="post">
-    <label for="customerName">Zákazník:</label>
-    <input
-        type="text"
-        id="customerName"
-        name="customerName"
-        value="{{ order.customerName }}"
-        required
-    >
+{% block body %}
+    <div class="order-form">
+        <h1>Upravit objednávku</h1>
 
-    <label for="total">Celková cena:</label>
-    <input
-        type="number"
-        id="total"
-        name="total"
-        value="{{ order.total }}"
-        min="0"
-        required
-    >
+        {{ form_start(form) }}
 
-    <button type="submit">
-        Uložit změny
-    </button>
-</form>
+            {{ form_row(form.customerName) }}
+            {{ form_row(form.total) }}
+
+            <button class="button" type="submit">
+                Uložit změny
+            </button>
+
+        {{ form_end(form) }}
+
+        <a class="back-link" href="{{ path('order_list') }}">
+            Zpět na objednávky
+        </a>
+    </div>
+{% endblock %}
