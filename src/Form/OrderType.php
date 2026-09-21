@@ -17,8 +17,8 @@ class OrderType extends AbstractType
         array $options,
     ): void {
         $builder
-            ->add('customerName', TextType::class)
-            ->add('total', IntegerType::class);
+            ->add('customerName', TextType::class, ['label' => 'Jméno zákazníka'])
+            ->add('total', IntegerType::class, ['label' => 'Cena objednávky', 'attr' => ['min' => 0]]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

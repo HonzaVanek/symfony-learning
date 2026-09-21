@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: 'orders')]
@@ -16,13 +17,24 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Jméno zákazníka nesmí být prázdné.')]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'Jméno musí mít alespoň {{ limit }} znaky.',
+        maxMessage: 'Jméno může mít maximálně {{ limit }} znaků.',
+    )]
     private string $customerName;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero(message: 'Cena objednávky nesmí být záporná.')]
     private int $total;
 
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Customer $customer = null;
 
     public function __construct(string $customerName, int $total)
     {
@@ -59,5 +71,17 @@ class Order
     public function setTotal(int $total): void
     {
         $this->total = $total;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
+
+        return $this;
     }
 }
