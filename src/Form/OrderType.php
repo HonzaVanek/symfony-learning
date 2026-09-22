@@ -9,6 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Customer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 class OrderType extends AbstractType
 {
@@ -17,7 +20,12 @@ class OrderType extends AbstractType
         array $options,
     ): void {
         $builder
-            ->add('customerName', TextType::class, ['label' => 'Jméno zákazníka'])
+            ->add('customer', EntityType::class, [
+                'class' => Customer::class,
+                'choice_label' => 'name',
+                'label' => 'Zákazník',
+                'placeholder' => 'Vyberte zákazníka',
+            ])
             ->add('total', IntegerType::class, ['label' => 'Cena objednávky', 'attr' => ['min' => 0]]);
     }
 
@@ -28,7 +36,7 @@ class OrderType extends AbstractType
 
             'empty_data' => function (FormInterface $form): Order {
                 return new Order(
-                    $form->get('customerName')->getData(),
+                    $form->get('customer')->getData(),
                     $form->get('total')->getData(),
                 );
             },
