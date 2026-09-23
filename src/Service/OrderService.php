@@ -25,19 +25,19 @@ class OrderService
         return $order->getTotal();
     }
 
-    public function createOrder(int $total, string $customerName): Order
-    {
-        $order = new Order($customerName, $total);
-
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-
-        return $order;
-    }
+#    public function createOrder(int $total, string $customerName): Order
+#    {
+#        $order = new Order($customerName, $total);
+#
+#        $this->entityManager->persist($order);
+#        $this->entityManager->flush();
+#
+#        return $order;
+#    }
 
     public function getAllOrders(): array
     {
-        return $this->orderRepository->findAll();
+        return $this->orderRepository->findAllWithCustomer();
     }
 
     public function getOrder(int $id): ?Order
@@ -45,16 +45,16 @@ class OrderService
         return $this->orderRepository->find($id);
     }
 
-    public function updateOrder(
-        Order $order,
-        string $customerName,
-        int $total,
-    ): void {
-        $order->setCustomerName($customerName);
-        $order->setTotal($total);
+#    public function updateOrder(
+#        Order $order,
+#        string $customerName,
+#        int $total,
+#    ): void {
+#        $order->setCustomerName($customerName);
+#        $order->setTotal($total);
 
-        $this->entityManager->flush();
-    }
+#        $this->entityManager->flush();
+#    }
 
     public function deleteOrder(Order $order): void
     {

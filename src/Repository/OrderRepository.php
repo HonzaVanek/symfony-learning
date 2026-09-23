@@ -12,4 +12,13 @@ class OrderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Order::class);
     }
+
+    public function findAllWithCustomer(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.customer', 'c')
+            ->addSelect('c')
+            ->getQuery()
+            ->getResult();
+    }
 }

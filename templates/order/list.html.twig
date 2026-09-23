@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('js/order-list.js') }}"></script>
+    <script type="module" src="{{ asset('js/orders-api.js') }}"></script>
+{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
-
     <link rel="stylesheet" href="{{ asset('styles/order-list.css') }}">
 {% endblock %}
 
@@ -10,11 +15,22 @@
 <div class="order-list">
     <h1>Objednávky</h1>
 
+
+    <div class="order-search">
+        <label for="order-search">Vyhledat zákazníka:</label>
+
+        <input
+            type="search"
+            id="order-search"
+            placeholder="Zadej jméno zákazníka..."
+        >
+    </div>
+
     {% if orders %}
         <ul>
             {% for order in orders %}
-                <li>
-                    ID: {{ order.id }}, cena: {{ order.total }}, zákazník: {{ order.customerName }}, vytvořeno: {{ order.createdAt|date('Y-m-d H:i:s') }} 
+                <li class="order-item" data-customer-name="{{ order.customer.name }}">
+                    ID: {{ order.id }}, cena: {{ order.total }}, zákazník: {{ order.customer.name }}, vytvořeno: {{ order.createdAt|date('Y-m-d H:i:s') }} 
                     <a href="{{ path('order_edit', { id: order.id }) }}">Upravit</a>
 
                     <form method="post" action="{{ path('order_delete', { id: order.id }) }}" style="display: inline;">
@@ -33,6 +49,23 @@
     <a href="{{ path('order_create') }}">
         Vytvořit novou objednávku
     </a>
-</div>
+
+</br></br></br>
+
+        <hr>
+
+        <h2>Objednávky načtené přes API</h2>
+
+        <button id="load-api-orders" type="button">
+            Načíst z API
+        </button>
+
+        <p id="api-status"></p>
+
+        <ul id="api-order-list"></ul>
+
+    </div>
+
+
 
 {% endblock %}
